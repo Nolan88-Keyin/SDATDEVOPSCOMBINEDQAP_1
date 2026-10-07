@@ -1,73 +1,70 @@
 package com.keyin;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-class AttendeeTest {
+public class AttendeeTest {
 
     @Test
-    void storesNameAndEmail() {
+    public void testStoresNameAndEmail() {
         attendee person = new attendee("Alex Smith", "alex@example.com");
 
-        assertEquals("Alex Smith", person.getName());
-        assertEquals("alex@example.com", person.getEmail());
+        Assertions.assertEquals("Alex Smith", person.getName());
+        Assertions.assertEquals("alex@example.com", person.getEmail());
     }
 
     @Test
-    void normalizesEmailToLowercase() {
+    public void testNormalizesEmailToLowercase() {
         attendee person = new attendee("Alex Smith", "Alex@Example.COM");
 
-        assertEquals("alex@example.com", person.getEmail());
+        Assertions.assertEquals("alex@example.com", person.getEmail());
     }
 
     @Test
-    void rejectsNullName() {
-        assertThrows(IllegalArgumentException.class,
+    public void testRejectsNullName() {
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new attendee(null, "alex@example.com"));
     }
 
     @Test
-    void rejectsBlankName() {
-        assertThrows(IllegalArgumentException.class,
+    public void testRejectsBlankName() {
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new attendee("   ", "alex@example.com"));
     }
 
     @Test
-    void rejectsNullEmail() {
-        assertThrows(IllegalArgumentException.class,
+    public void testRejectsNullEmail() {
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new attendee("Alex Smith", null));
     }
 
     @Test
-    void rejectsEmailWithoutAtSign() {
-        assertThrows(IllegalArgumentException.class,
+    public void testRejectsEmailWithoutAtSign() {
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new attendee("Alex Smith", "alex.example.com"));
     }
 
     @Test
-    void attendeesWithSameEmailAreEqualRegardlessOfCase() {
+    public void testAttendeesWithSameEmailAreEqualRegardlessOfCase() {
         attendee first = new attendee("Alex Smith", "Alex@Example.COM");
         attendee second = new attendee("Different Name", "alex@example.com");
 
-        assertEquals(first, second);
+        Assertions.assertEquals(first, second);
     }
 
     @Test
-    void attendeesWithDifferentEmailsAreNotEqual() {
+    public void testAttendeesWithDifferentEmailsAreNotEqual() {
         attendee first = new attendee("Alex Smith", "alex@example.com");
         attendee second = new attendee("Alex Smith", "other@example.com");
 
-        assertNotEquals(first, second);
+        Assertions.assertNotEquals(first, second);
     }
 
     @Test
-    void equalAttendeesHaveSameHashCode() {
+    public void testEqualAttendeesHaveSameHashCode() {
         attendee first = new attendee("Alex Smith", "Alex@Example.COM");
         attendee second = new attendee("Alex Smith", "alex@example.com");
 
-        assertEquals(first.hashCode(), second.hashCode());
+        Assertions.assertEquals(first.hashCode(), second.hashCode());
     }
 }
