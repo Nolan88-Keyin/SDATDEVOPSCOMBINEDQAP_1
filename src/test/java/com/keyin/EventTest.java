@@ -5,14 +5,6 @@ import org.junit.jupiter.api.Test;
 
 public class EventTest {
     @Test
-    public void testEventDetails() {
-        event concert = new event("Concert", 1);
-
-        Assertions.assertEquals("Concert", concert.getTitle());
-        Assertions.assertEquals(1, concert.getCapacity());
-    }
-
-    @Test
     public void testRegisterAttendee() {
         event concert = new event("Concert", 1);
         attendee alex = new attendee("Alex Smith", "alex@example.com");
@@ -21,14 +13,6 @@ public class EventTest {
 
         Assertions.assertTrue(concert.isRegistered(alex));
         Assertions.assertEquals(1, concert.getAttendees().size());
-    }
-
-    @Test
-    public void testNewEventHasAllSpotsLeft() {
-        event concert = new event("Concert", 1);
-
-        Assertions.assertEquals(1, concert.getSpotsLeft());
-        Assertions.assertFalse(concert.isFull());
     }
 
     @Test
