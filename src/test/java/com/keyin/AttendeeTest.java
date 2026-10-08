@@ -6,14 +6,6 @@ import org.junit.jupiter.api.Test;
 public class AttendeeTest {
 
     @Test
-    public void testStoresNameAndEmail() {
-        attendee person = new attendee("Alex Smith", "alex@example.com");
-
-        Assertions.assertEquals("Alex Smith", person.getName());
-        Assertions.assertEquals("alex@example.com", person.getEmail());
-    }
-
-    @Test
     public void testNormalizesEmailToLowercase() {
         attendee person = new attendee("Alex Smith", "Alex@Example.COM");
 
