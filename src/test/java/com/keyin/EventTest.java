@@ -3,7 +3,7 @@ package com.keyin;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class EventTest {
+class EventTest {
     @Test
     void registersAttendee() {
         Event concert = new Event("Concert", 1);
@@ -13,15 +13,6 @@ public class EventTest {
 
         Assertions.assertTrue(concert.isRegistered(alex));
         Assertions.assertEquals(1, concert.getAttendees().size());
-    }
-
-    @Test
-    void reportsFullAtCapacity() {
-        Event concert = new Event("Concert", 1);
-        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
-
-        concert.registerAttendee(alex);
-
         Assertions.assertTrue(concert.isFull());
         Assertions.assertEquals(0, concert.getSpotsLeft());
     }
@@ -87,5 +78,37 @@ public class EventTest {
 
         Assertions.assertTrue(concert.isRegistered(alex));
         Assertions.assertEquals(1, concert.getAttendees().size());
+    }
+
+    @Test
+    void rejectsNullOrBlankTitle() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Event(null, 1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Event("   ", 1));
+    }
+
+    @Test
+    void rejectsNonPositiveCapacity() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Event("Concert", 0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Event("Concert", -1));
+    }
+
+    @Test
+    void rejectsNullAttendee() {
+        Event concert = new Event("Concert", 1);
+
+        Assertions.assertThrows(NullPointerException.class, () -> concert.registerAttendee(null));
+        Assertions.assertThrows(NullPointerException.class, () -> concert.isRegistered(null));
+        Assertions.assertThrows(NullPointerException.class, () -> concert.cancelAttendee(null));
+    }
+
+    @Test
+    void attendeeCollectionCannotBeModifiedExternally() {
+        Event concert = new Event("Concert", 2);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
+        concert.registerAttendee(alex);
+
+        Assertions.assertThrows(UnsupportedOperationException.class,
+                () -> concert.getAttendees().clear());
+        Assertions.assertTrue(concert.isRegistered(alex));
     }
 }
