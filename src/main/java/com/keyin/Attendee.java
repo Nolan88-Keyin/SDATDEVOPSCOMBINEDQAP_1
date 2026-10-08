@@ -1,12 +1,13 @@
 package com.keyin;
 
+import java.util.Locale;
 import java.util.Objects;
 
-public class attendee {
+public class Attendee {
     private final String name;
     private final String email;
 
-    public attendee(String name, String email) {
+    public Attendee(String name, String email) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Attendee name is required");
         }
@@ -14,7 +15,7 @@ public class attendee {
             throw new IllegalArgumentException("A valid email is required");
         }
         this.name = name;
-        this.email = email.toLowerCase();
+        this.email = email.toLowerCase(Locale.ROOT);
     }
 
     public String getName() {
@@ -27,7 +28,7 @@ public class attendee {
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof attendee attendee && email.equals(attendee.email);
+        return other instanceof Attendee attendee && email.equals(attendee.email);
     }
 
     @Override
