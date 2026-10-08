@@ -30,6 +30,12 @@ class AttendeeTest {
     }
 
     @Test
+    void rejectsBlankEmail() {
+        Assertions.assertThrows(IllegalArgumentException.class,
+                () -> new Attendee("Alex Smith", "   "));
+    }
+
+    @Test
     void rejectsEmailWithoutAtSign() {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("Alex Smith", "alex.example.com"));

@@ -1,6 +1,5 @@
 package com.keyin;
 
-import java.util.Locale;
 import java.util.Objects;
 
 public class Attendee {
@@ -15,7 +14,7 @@ public class Attendee {
             throw new IllegalArgumentException("A valid email is required");
         }
         this.name = name;
-        this.email = email.toLowerCase(Locale.ROOT);
+        this.email = email.toLowerCase();
     }
 
     public String getName() {
