@@ -1,12 +1,7 @@
 package com.keyin;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assertions;
 
 class EventManagerTest {
     @Test
@@ -15,8 +10,8 @@ class EventManagerTest {
 
         Event concert = manager.createEvent("Concert", 10);
 
-        assertEquals("Concert", concert.getTitle());
-        assertEquals(1, manager.getEventCount());
+        Assertions.assertEquals("Concert", concert.getTitle());
+        Assertions.assertEquals(1, manager.getEventCount());
     }
 
     @Test
@@ -24,11 +19,11 @@ class EventManagerTest {
         EventManager manager = new EventManager();
         manager.createEvent("Concert", 10);
 
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> manager.createEvent("Concert", 20));
 
-        assertEquals(1, manager.getEventCount());
-        assertEquals(10, manager.getEvent("Concert").getCapacity());
+        Assertions.assertEquals(1, manager.getEventCount());
+        Assertions.assertEquals(10, manager.getEvent("Concert").getCapacity());
     }
 
     @Test
@@ -36,14 +31,14 @@ class EventManagerTest {
         EventManager manager = new EventManager();
         Event concert = manager.createEvent("Concert", 10);
 
-        assertSame(concert, manager.getEvent("Concert"));
+        Assertions.assertSame(concert, manager.getEvent("Concert"));
     }
 
     @Test
     void rejectsLookupForMissingEvent() {
         EventManager manager = new EventManager();
 
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> manager.getEvent("Missing"));
     }
 
@@ -54,14 +49,14 @@ class EventManagerTest {
 
         manager.cancelEvent("Concert");
 
-        assertEquals(0, manager.getEventCount());
+        Assertions.assertEquals(0, manager.getEventCount());
     }
 
     @Test
     void rejectsCancellationOfMissingEvent() {
         EventManager manager = new EventManager();
 
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> manager.cancelEvent("Missing"));
     }
 
@@ -70,9 +65,9 @@ class EventManagerTest {
         EventManager manager = new EventManager();
         manager.createEvent("Concert", 10);
 
-        assertThrows(UnsupportedOperationException.class,
+        Assertions.assertThrows(UnsupportedOperationException.class,
                 () -> manager.getEvents().clear());
-        assertEquals(1, manager.getEventCount());
+        Assertions.assertEquals(1, manager.getEventCount());
     }
 
     @Test
@@ -83,7 +78,7 @@ class EventManagerTest {
 
         manager.registerAttendee("Concert", alex);
 
-        assertTrue(manager.getEvent("Concert").isRegistered(alex));
+        Assertions.assertTrue(manager.getEvent("Concert").isRegistered(alex));
     }
 
     @Test
@@ -95,7 +90,7 @@ class EventManagerTest {
 
         manager.cancelAttendee("Concert", alex);
 
-        assertFalse(manager.getEvent("Concert").isRegistered(alex));
+        Assertions.assertFalse(manager.getEvent("Concert").isRegistered(alex));
     }
 
     @Test
@@ -103,7 +98,7 @@ class EventManagerTest {
         EventManager manager = new EventManager();
         Attendee alex = new Attendee("Alex Smith", "alex@example.com");
 
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> manager.registerAttendee("Missing", alex));
     }
 }
