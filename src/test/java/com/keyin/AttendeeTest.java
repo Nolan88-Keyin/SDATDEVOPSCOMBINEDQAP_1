@@ -1,40 +1,37 @@
 package com.keyin;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AttendeeTest {
     @Test
     void normalizesEmailToLowercase() {
         Attendee person = new Attendee("Alex Smith", "Alex@Example.COM");
 
-        assertEquals("alex@example.com", person.getEmail());
+        Assertions.assertEquals("alex@example.com", person.getEmail());
     }
 
     @Test
     void rejectsNullName() {
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee(null, "alex@example.com"));
     }
 
     @Test
     void rejectsBlankName() {
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("   ", "alex@example.com"));
     }
 
     @Test
     void rejectsNullEmail() {
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("Alex Smith", null));
     }
 
     @Test
     void rejectsEmailWithoutAtSign() {
-        assertThrows(IllegalArgumentException.class,
+        Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("Alex Smith", "alex.example.com"));
     }
 
@@ -43,7 +40,7 @@ class AttendeeTest {
         Attendee first = new Attendee("Alex Smith", "Alex@Example.COM");
         Attendee second = new Attendee("Different Name", "alex@example.com");
 
-        assertEquals(first, second);
+        Assertions.assertEquals(first, second);
     }
 
     @Test
@@ -51,7 +48,7 @@ class AttendeeTest {
         Attendee first = new Attendee("Alex Smith", "alex@example.com");
         Attendee second = new Attendee("Alex Smith", "other@example.com");
 
-        assertNotEquals(first, second);
+        Assertions.assertNotEquals(first, second);
     }
 
     @Test
@@ -59,6 +56,6 @@ class AttendeeTest {
         Attendee first = new Attendee("Alex Smith", "Alex@Example.COM");
         Attendee second = new Attendee("Alex Smith", "alex@example.com");
 
-        assertEquals(first.hashCode(), second.hashCode());
+        Assertions.assertEquals(first.hashCode(), second.hashCode());
     }
 }
