@@ -45,12 +45,12 @@ public class Event {
         return capacity - attendees.size();
     }
 
-    public void registerAttendee(Attendee attendee) {
+    public boolean registerAttendee(Attendee attendee) {
         Objects.requireNonNull(attendee, "Attendee is required");
-        if (isFull() || isRegistered(attendee)) {
-            return;
+        if (isFull()) {
+            return false;
         }
-        attendees.add(attendee);
+        return attendees.add(attendee);
     }
 
     public void cancelAttendee(Attendee attendee) {
