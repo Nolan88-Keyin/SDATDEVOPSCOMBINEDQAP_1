@@ -37,38 +37,13 @@ There are 24 JUnit 5 tests covering positive and negative cases, using `assertEq
 
 **1. Fail-fast validation** (`Event` constructor): invalid input is rejected immediately, so an invalid `Event` cannot exist.
 
-```java
-if (title == null || title.isBlank()) {
-    throw new IllegalArgumentException("Event title is required");
-}
-if (capacity <= 0) {
-    throw new IllegalArgumentException("Event capacity must be positive");
-}
-```
-
 ![Example 1](docs/example1.png)
 
 **2. Encapsulation** (`Event.getAttendees`): callers get a read-only view, so only `Event` can change its data.
 
-```java
-public Set<Attendee> getAttendees() {
-    return Collections.unmodifiableSet(attendees);
-}
-```
-
 ![Example 2](docs/example2.png)
 
 **3. Small methods with clear names** (`Event`): each method does one thing and reads like a sentence.
-
-```java
-public boolean isFull() {
-    return attendees.size() >= capacity;
-}
-
-public int getSpotsLeft() {
-    return capacity - attendees.size();
-}
-```
 
 ![Example 3](docs/example3.png)
 
