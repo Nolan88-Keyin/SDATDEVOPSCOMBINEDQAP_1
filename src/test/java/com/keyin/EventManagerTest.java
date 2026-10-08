@@ -1,95 +1,109 @@
 package com.keyin;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class EventManagerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+class EventManagerTest {
     @Test
-    public void testCreateEvent() {
-        eventManager manager = new eventManager();
+    void createsEvent() {
+        EventManager manager = new EventManager();
 
-        event concert = manager.createEvent("Concert", 10);
+        Event concert = manager.createEvent("Concert", 10);
 
-        Assertions.assertEquals("Concert", concert.getTitle());
-        Assertions.assertEquals(1, manager.getEventCount());
+        assertEquals("Concert", concert.getTitle());
+        assertEquals(1, manager.getEventCount());
     }
 
     @Test
-    public void testCreateDuplicateEventThrowsException() {
-        eventManager manager = new eventManager();
+    void rejectsDuplicateEventTitle() {
+        EventManager manager = new EventManager();
         manager.createEvent("Concert", 10);
 
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> manager.createEvent("Concert", 20));
 
-        Assertions.assertEquals(1, manager.getEventCount());
-        Assertions.assertEquals(10, manager.getEvent("Concert").getCapacity());
+        assertEquals(1, manager.getEventCount());
+        assertEquals(10, manager.getEvent("Concert").getCapacity());
     }
 
     @Test
-    public void testGetEvent() {
-        eventManager manager = new eventManager();
-        event concert = manager.createEvent("Concert", 10);
+    void returnsCreatedEventByTitle() {
+        EventManager manager = new EventManager();
+        Event concert = manager.createEvent("Concert", 10);
 
-        Assertions.assertSame(concert, manager.getEvent("Concert"));
+        assertSame(concert, manager.getEvent("Concert"));
     }
 
     @Test
-    public void testGetMissingEventThrowsException() {
-        eventManager manager = new eventManager();
+    void rejectsLookupForMissingEvent() {
+        EventManager manager = new EventManager();
 
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> manager.getEvent("Missing"));
     }
 
     @Test
-    public void testCancelEvent() {
-        eventManager manager = new eventManager();
+    void cancelsExistingEvent() {
+        EventManager manager = new EventManager();
         manager.createEvent("Concert", 10);
 
         manager.cancelEvent("Concert");
 
-        Assertions.assertEquals(0, manager.getEventCount());
+        assertEquals(0, manager.getEventCount());
     }
 
     @Test
-    public void testCancelMissingEventThrowsException() {
-        eventManager manager = new eventManager();
+    void rejectsCancellationOfMissingEvent() {
+        EventManager manager = new EventManager();
 
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> manager.cancelEvent("Missing"));
     }
 
     @Test
-    public void testRegisterAttendee() {
-        eventManager manager = new eventManager();
+    void preventsExternalModificationOfEvents() {
+        EventManager manager = new EventManager();
         manager.createEvent("Concert", 10);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
 
-        manager.registerAttendee("Concert", alex);
-
-        Assertions.assertTrue(manager.getEvent("Concert").isRegistered(alex));
+        assertThrows(UnsupportedOperationException.class,
+                () -> manager.getEvents().clear());
+        assertEquals(1, manager.getEventCount());
     }
 
     @Test
-    public void testCancelAttendee() {
-        eventManager manager = new eventManager();
+    void registersAttendeeForEvent() {
+        EventManager manager = new EventManager();
         manager.createEvent("Concert", 10);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
+
+        manager.registerAttendee("Concert", alex);
+
+        assertTrue(manager.getEvent("Concert").isRegistered(alex));
+    }
+
+    @Test
+    void cancelsAttendeeRegistration() {
+        EventManager manager = new EventManager();
+        manager.createEvent("Concert", 10);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
         manager.registerAttendee("Concert", alex);
 
         manager.cancelAttendee("Concert", alex);
 
-        Assertions.assertFalse(manager.getEvent("Concert").isRegistered(alex));
+        assertFalse(manager.getEvent("Concert").isRegistered(alex));
     }
 
     @Test
-    public void testRegisterAttendeeForMissingEventThrowsException() {
-        eventManager manager = new eventManager();
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
+    void rejectsRegistrationForMissingEvent() {
+        EventManager manager = new EventManager();
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
 
-        Assertions.assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> manager.registerAttendee("Missing", alex));
     }
 }
