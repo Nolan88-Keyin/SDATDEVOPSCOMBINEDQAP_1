@@ -5,12 +5,12 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class event {
+public class Event {
     private final String title;
     private final int capacity;
-    private final Set<attendee> attendees = new LinkedHashSet<>();
+    private final Set<Attendee> attendees = new LinkedHashSet<>();
 
-    public event(String title, int capacity) {
+    public Event(String title, int capacity) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("Event title is required");
         }
@@ -29,7 +29,7 @@ public class event {
         return capacity;
     }
 
-    public Set<attendee> getAttendees() {
+    public Set<Attendee> getAttendees() {
         return Collections.unmodifiableSet(attendees);
     }
 
@@ -37,7 +37,7 @@ public class event {
         return attendees.size() >= capacity;
     }
 
-    public boolean isRegistered(attendee attendee) {
+    public boolean isRegistered(Attendee attendee) {
         return attendees.contains(Objects.requireNonNull(attendee, "Attendee is required"));
     }
 
@@ -45,7 +45,7 @@ public class event {
         return capacity - attendees.size();
     }
 
-    public void registerAttendee(attendee attendee) {
+    public void registerAttendee(Attendee attendee) {
         Objects.requireNonNull(attendee, "Attendee is required");
         if (isFull() || isRegistered(attendee)) {
             return;
@@ -53,7 +53,7 @@ public class event {
         attendees.add(attendee);
     }
 
-    public void cancelAttendee(attendee attendee) {
+    public void cancelAttendee(Attendee attendee) {
         attendees.remove(Objects.requireNonNull(attendee, "Attendee is required"));
     }
 }

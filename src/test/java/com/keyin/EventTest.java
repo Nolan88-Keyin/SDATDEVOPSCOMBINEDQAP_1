@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 public class EventTest {
     @Test
-    public void testRegisterAttendee() {
-        event concert = new event("Concert", 1);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
+    void registersAttendee() {
+        Event concert = new Event("Concert", 1);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
 
         concert.registerAttendee(alex);
 
@@ -16,9 +16,9 @@ public class EventTest {
     }
 
     @Test
-    public void testEventIsFullAtCapacity() {
-        event concert = new event("Concert", 1);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
+    void reportsFullAtCapacity() {
+        Event concert = new Event("Concert", 1);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
 
         concert.registerAttendee(alex);
 
@@ -27,10 +27,10 @@ public class EventTest {
     }
 
     @Test
-    public void testRejectRegistrationWhenFull() {
-        event concert = new event("Concert", 1);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
-        attendee sam = new attendee("Sam Jones", "sam@example.com");
+    void rejectsRegistrationWhenFull() {
+        Event concert = new Event("Concert", 1);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
+        Attendee sam = new Attendee("Sam Jones", "sam@example.com");
 
         concert.registerAttendee(alex);
         concert.registerAttendee(sam);
@@ -40,50 +40,50 @@ public class EventTest {
     }
 
     @Test
-    public void testPreventDuplicateRegistration() {
-        event workshop = new event("Workshop", 5);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
+    void preventsDuplicateRegistration() {
+        Event workshop = new Event("Workshop", 5);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
 
         workshop.registerAttendee(alex);
-        workshop.registerAttendee(new attendee("Alex Again", "ALEX@example.com"));
+        workshop.registerAttendee(new Attendee("Alex Again", "ALEX@example.com"));
 
         Assertions.assertTrue(workshop.isRegistered(alex));
         Assertions.assertEquals(1, workshop.getAttendees().size());
     }
 
     @Test
-    public void testCancelRemovesAttendeeAndFreesSpot() {
-        event concert = new event("Concert", 1);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
+    void cancellationRemovesAttendeeAndFreesSpot() {
+        Event concert = new Event("Concert", 1);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
 
         concert.registerAttendee(alex);
-        concert.cancel(alex);
+        concert.cancelAttendee(alex);
 
         Assertions.assertFalse(concert.isRegistered(alex));
         Assertions.assertEquals(1, concert.getSpotsLeft());
     }
 
     @Test
-    public void testCancelledSpotCanBeTakenByAnotherAttendee() {
-        event concert = new event("Concert", 1);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
-        attendee sam = new attendee("Sam Jones", "sam@example.com");
+    void cancelledSpotCanBeTakenByAnotherAttendee() {
+        Event concert = new Event("Concert", 1);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
+        Attendee sam = new Attendee("Sam Jones", "sam@example.com");
 
         concert.registerAttendee(alex);
-        concert.cancel(alex);
+        concert.cancelAttendee(alex);
         concert.registerAttendee(sam);
 
         Assertions.assertTrue(concert.isRegistered(sam));
     }
 
     @Test
-    public void testCancellingUnregisteredAttendeeChangesNothing() {
-        event concert = new event("Concert", 1);
-        attendee alex = new attendee("Alex Smith", "alex@example.com");
-        attendee sam = new attendee("Sam Jones", "sam@example.com");
+    void cancellingUnregisteredAttendeeChangesNothing() {
+        Event concert = new Event("Concert", 1);
+        Attendee alex = new Attendee("Alex Smith", "alex@example.com");
+        Attendee sam = new Attendee("Sam Jones", "sam@example.com");
 
         concert.registerAttendee(alex);
-        concert.cancel(sam);
+        concert.cancelAttendee(sam);
 
         Assertions.assertTrue(concert.isRegistered(alex));
         Assertions.assertEquals(1, concert.getAttendees().size());
