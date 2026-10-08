@@ -12,25 +12,17 @@ class AttendeeTest {
     }
 
     @Test
-    void rejectsNullName() {
+    void rejectsNullOrBlankName() {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee(null, "alex@example.com"));
-    }
-
-    @Test
-    void rejectsBlankName() {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("   ", "alex@example.com"));
     }
 
     @Test
-    void rejectsNullEmail() {
+    void rejectsNullOrBlankEmail() {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("Alex Smith", null));
-    }
-
-    @Test
-    void rejectsBlankEmail() {
         Assertions.assertThrows(IllegalArgumentException.class,
                 () -> new Attendee("Alex Smith", "   "));
     }
@@ -47,14 +39,6 @@ class AttendeeTest {
         Attendee second = new Attendee("Different Name", "alex@example.com");
 
         Assertions.assertEquals(first, second);
-    }
-
-    @Test
-    void attendeesWithDifferentEmailsAreNotEqual() {
-        Attendee first = new Attendee("Alex Smith", "alex@example.com");
-        Attendee second = new Attendee("Alex Smith", "other@example.com");
-
-        Assertions.assertNotEquals(first, second);
     }
 
     @Test

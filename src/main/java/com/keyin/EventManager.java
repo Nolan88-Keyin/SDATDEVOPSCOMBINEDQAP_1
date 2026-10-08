@@ -38,8 +38,8 @@ public class EventManager {
         return Collections.unmodifiableMap(events);
     }
 
-    public void registerAttendee(String eventTitle, Attendee attendee) {
-        getEvent(eventTitle).registerAttendee(attendee);
+    public boolean registerAttendee(String eventTitle, Attendee attendee) {
+        return getEvent(eventTitle).registerAttendee(attendee);
     }
 
     public void cancelAttendee(String eventTitle, Attendee attendee) {
